@@ -12,19 +12,30 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -33,13 +44,47 @@ import androidx.compose.ui.unit.sp
 import com.example.application_1.ui.theme.Application1Theme
 
 class LoginActivity: ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent{
             Application1Theme{
-                    Surface(color =  MaterialTheme.colorScheme.background) {
-                        LoginScreen()
-                    }
+//                    Surface(color =  MaterialTheme.colorScheme.background) {
+//                        LoginScreen()
+//                    }
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text("Login")
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = {}) {
+                                    Icon(Icons.Filled.Menu, contentDescription = "menu")
+                                }
+                            },
+                            actions = {
+                                IconButton(onClick = {}) {
+                                    Icon(
+                                        Icons.Filled.Notifications,
+                                        contentDescription = "notification"
+                                    )
+                                }
+                                IconButton(onClick = {}) {
+                                    Icon(Icons.Filled.Search, contentDescription = "search")
+                                }
+                            }
+                        )
+                    },
+                    floatingActionButton = {
+                        FloatingActionButton(onClick = {}) {
+                            Icon(Icons.Filled.Add, contentDescription = "add")
+                        }
+                    },
+                    floatingActionButtonPosition = FabPosition.End
+                ) {padding->
+                    LoginScreen( modifier = Modifier.padding(padding));
+                }
             }
         }
     }
@@ -55,7 +100,7 @@ private fun logged(context: Context, username:String, password:String){
 }
 
 @Composable
-fun LoginScreen(){
+fun LoginScreen(modifier: Modifier = Modifier){
     val context = LocalContext.current
     val username = remember{
         mutableStateOf("")
@@ -80,7 +125,7 @@ fun LoginScreen(){
                 Icon(Icons.Default.Person, contentDescription="person")
             },
             label = {
-                Text(text="username")
+                Text(text="Username")
             },
             placeholder = {
                 Text(text = "Enter Your Username")
@@ -96,7 +141,7 @@ fun LoginScreen(){
                 Icon(Icons.Default.Info, contentDescription="info")
             },
             label = {
-                Text(text="username")
+                Text(text="Password")
             },
             placeholder = {
                 Text(text = "Enter Your Username")
@@ -104,7 +149,7 @@ fun LoginScreen(){
             modifier = Modifier.fillMaxWidth()
         )
 
-        OutlinedButton(onClick = {logged(context,username.value,password.value)}, modifier = Modifier.fillMaxWidth()) {
+        OutlinedButton(onClick = {logged(context,username.value,password.value)}, modifier = Modifier.fillMaxWidth().padding(top = 20.dp)) {
             Text(text="Login")
         }
     }
